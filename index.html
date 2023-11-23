@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - Mailbox Submit</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/bf5ba39767.js" crossorigin="anonymous"></script>
 
@@ -15,7 +5,248 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet"> 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<script>
+var cloudOne = gsap.timeline({repeat: -1, delay: -12});
+ cloudOne.to("#cloud-one", 36, {x: "-720px", ease: Linear.easeNone});
 
+var cloudTwo = gsap.timeline({repeat: -1, delay: -3});
+ cloudTwo.to("#cloud-two", 24, {x: "-720px", ease: Linear.easeNone});
+
+var cloudFour = gsap.timeline({repeat: -1, delay: 4});
+ cloudFour.to("#cloud-four", 33, {x: "-720px", ease: Linear.easeNone});
+
+var cloudFive = gsap.timeline({repeat: -1});
+ cloudFive.to("#cloud-five", 24, {x: "-720px", ease: Linear.easeNone});
+
+$("#email").focus(function(){
+  if($("#email").val() == ""){
+    $("#placeholder").fadeToggle();
+  }
+});
+$("#email").focusout(function(){
+  if($("#email").val() == ""){
+    $("#placeholder").fadeToggle();
+  }
+});
+
+$("#btn").mouseenter(function(){
+  gsap.to("#btnSVG", .3, {fill: "#d85168"});
+});
+$("#btn").mouseleave(function(){
+  gsap.to("#btnSVG", .3, {fill: "#e96f8c"});
+});
+
+$("#email").on("keypress", function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) {
+    $("#btn").click();
+  }
+});
+
+gsap.set("#mail", {scale: 0, x: 20, transformOrigin: "right"});
+
+$("#btn").click(function() {
+  var submit = gsap.timeline();
+    submit.to("#title, #disclaimer, #btn, #email, #placeholder", {opacity: 0, pointerEvents: "none", ease: Power1.easeInOut});
+    submit.to("#inputSVG, #btnSVG", .5, {morphSVG:{shape:"#invisible-heart"}, ease: Power1.easeInOut});
+    submit.to("#inputSVG, #btnSVG", .5, {y: -30, ease: Power1.easeInOut});
+    submit.to("#success", .5, {delay: -.5, opacity: 1, ease: Power1.easeInOut});
+  
+  var mailbox = gsap.timeline();
+    mailbox.to({}, 1, {});
+    mailbox.to("#mailbox-stick", 3, {rotate: -90, x: 15, transformOrigin: "left", ease: Elastic.easeOut});
+    mailbox.to("#cover-closed", 1, {delay: -3, y: -1, rotation:-180, transformOrigin: "bottom", ease: "Bounce.easeOut"});
+    mailbox.to("#cover-open-side", .15, {delay: -2, opacity: 0});
+    mailbox.to("#heart", .15, {delay: -3, opacity: 0});
+    mailbox.to("#mail", 0, {delay: -3, opacity: 1, display: "block"});
+    mailbox.to("#mail", 1, {delay: -3, scale: 1, x: 0, transformOrigin: "right", ease: "back.out"});
+  
+  var wrapper = gsap.timeline({delay: 3});
+    wrapper.to("#svgWrapper", 1, {scale: .8, ease: Bounce.easeOut});
+    wrapper.to("#svgWrapper", 1, {delay: -.6, x: "-200%", rotate: 9, ease: Power1.easeIn});
+    wrapper.to("#title, #disclaimer, #btn, #email, #placeholder", 0, {opacity: 1, pointerEvents: "all"});
+    wrapper.to("#inputSVG", 0, {morphSVG: {shape:"#inputSVG"}, y: 0});
+    wrapper.to("#btnSVG", 0, {morphSVG: {shape:"#btnSVG"}, y: 0});
+    wrapper.to("#success", 0, {opacity: 0});
+    wrapper.to("#mailbox-stick", 0, {rotate: 0, x: 0, transformOrigin: "left"});
+    wrapper.to("#cover-closed", 0, {rotation: 0, y: 0, transformOrigin: "bottom"});
+    wrapper.to("#cover-open-side", 0, {opacity: 1});
+    wrapper.to("#heart", 0, {opacity: 1});
+    wrapper.to("#mail", 0, {opacity: 0, scale: 0, x: 0, transformOrigin: "right", display: "none"});
+    wrapper.to("#svgWrapper", 0, {x: "200%"});
+    wrapper.to("#svgWrapper", 1.5, {x: "0", rotate: -9, ease: "back.out"});
+    wrapper.to("#svgWrapper", 1, {delay: -.5, rotate: 0, scale: 1, ease: Bounce.easeOut});
+});
+</script>
+<style>body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #b9e3f9;
+  overflow: hidden;
+  transform: scale(.9)
+}
+
+#svgWrapper {
+  width: 720px;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#mailboxSVG {
+  width: 720px;
+  position: absolute;
+  z-index: -1;
+  border-radius: 25px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.1);
+}
+
+#textWrapper {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  top: 260px;
+}
+
+h1 {
+  font-family: "Pacifico", Helvetica, sans-serif;
+  color: #E96F8C;
+  font-weight: 300;
+  font-size: 42px;
+  position: relative;
+  top: -25px;
+  pointer-events: none;
+}
+
+input {
+  position: absolute;
+  top: -43px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+  padding: 12px 0;
+  color: rgba(0,0,0,.5);
+  background: transparent;
+  width: 190px;
+  left: -115px;
+  text-align: center;
+  outline: 0;
+  border: none;
+}
+
+#disclaimer, #success {
+  font-family: "Open Sans", sans-serif;
+  color: rgba(0,0,0,.5);
+  pointer-events: none;
+  font-size: 14px;
+  position: relative;
+  top: 18px;
+}
+
+#success {
+  position: relative;
+  top: -80px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#success {
+  font-size: 18px;
+}
+
+#formWrapper {
+  position: relative;
+}
+
+#placeholder {
+  position: absolute;
+  left: -115px;
+  top: -50px;
+  pointer-events: none;
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+  font-style: italic;
+  color: rgba(0,0,0,.3);
+  text-align: center;
+  width: 190px;
+}
+
+button {
+  background: transparent;
+  padding: 27px;
+  border-radius: 100%;
+  color: transparent;
+  position: absolute;
+  top: -48px;
+  left: 88px;
+  cursor: pointer;
+  border: none;
+}
+
+.fa-paper-plane {
+  color: white;
+  font-size: 24px;
+  position: relative;
+  left: -12px;
+  top: -11px;
+}
+
+@media (max-height: 720px) {
+  svg {
+    transform: scale(.7);
+  }
+  #textWrapper {
+    top: 193px;
+  }
+  #title {
+    font-size: 32px;
+  }
+  #disclaimer {
+    font-size: 12px;
+    top: 0;
+  }
+  #email, #placeholder {
+    font-size: 14px;
+  }
+  
+  #placeholder {
+    top: -46px;
+    left: -108px;
+  }
+  
+  #email {
+    top: -41px;
+    width: 130px;
+    left: -80px;
+    padding: 10px 0;
+  }
+  
+  #btn {
+    padding: 10px;
+    left: 62px;
+    top: -42px;
+  }
+  
+  .fa-paper-plane {
+    font-size: 18px;
+    left: -1px;
+    top: 1px;
+  }
+  
+  #success {
+    font-size: 14px;
+    top: -70px;
+  }
+}
+</style>
 <div id="svgWrapper">
 <svg version="1.1" id="mailboxSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 370.1 370.4" style="enable-background:new 0 0 370.1 370.4;" xml:space="preserve">
@@ -191,38 +422,13 @@
 </svg>
 
 <div id="textWrapper">
-<h1 id="title">Баярлалаа</h1>
+<h1 id="title">Join the Club</h1>
 <div id="formWrapper">
-  <p id="placeholder">Хүлээн авагч мэйл</p>
+  <p id="placeholder">Enter your email</p>
   <input id="email" type="text" autocomplete="off">
   <button id="btn" type="button"><i class="fas fa-paper-plane"></i></button>
 </div>
-<p id="disclaimer">Хүлээн авагчийн мэйл хаягийг оруулна уу</p>
-<p id="success">Таны талархал илгээгдлээ.</p>
+<p id="disclaimer">No spam. No fluff. Just awesome and free stuff.</p>
+<p id="success">Please, confirm your email to continue.</p>
 </div>
 </div>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/CSSRulePlugin.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/CustomBounce3.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/CustomEase3.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/CustomWiggle3.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/DrawSVGPlugin3.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/Draggable.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/EaselPlugin.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/EasePack.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/GSDevTools3.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/InertiaPlugin.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MorphSVGPlugin3.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MotionPathHelper.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/MotionPathPlugin.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/Physics2DPlugin3.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/PhysicsPropsPlugin3.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/PixiPlugin.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ScrambleTextPlugin3.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.5/ScrollToPlugin.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/SplitText3.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/TextPlugin.min.js'></script><script  src="./script.js"></script>
-
-</body>
-</html>
